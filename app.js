@@ -15,6 +15,9 @@ let BIBLE=null;
 async function load(){if(!BIBLE)BIBLE=await (await fetch('38-bible.json')).json();idx=BIBLE.books.map(b=>({n:b.n,t:b.t,c:b.ch.length}));return BIBLE}
 async function index(){await load();return idx}
 const banner=(t,back)=>`<div class="banner">${back?`<a class="back" href="${back}">›</a>`:''}<h1>${t}</h1></div>`;
+const VW=()=>localStorage.vw==='list'?'list':'grid';
+const VT=()=>`<button class="vt" onclick="tv()">${VW()==='list'?'▦ عرض شبكي':'☰ عرض قائمة'}</button>`;
+function tv(){localStorage.vw=VW()==='list'?'grid':'list';route()}
 function nav(a){document.getElementById('n1').className=a==1?'on':'';document.getElementById('n2').className=a==2?'on':''}
 async function route(){
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
@@ -22,9 +25,9 @@ async function route(){
  if(p[0]==='soon'){nav(0);$.innerHTML=banner(p[1],'#/')+`<div class="soon">قسم ${p[1]} قيد الإعداد.<br>سيُضاف قريبًا.</div>`;return}
  if(p[0]==='bible'){nav(2);const I=await index();
   if(p.length===1||p[1]==='OT'||p[1]==='NT'){const t=p[1]==='NT'?'NT':'OT';
-   $.innerHTML=banner('الكتاب المقدس','#/')+`<div class="tabs"><a class="${t=='OT'?'on':''}" href="#/bible/OT">العهد القديم</a><a class="${t=='NT'?'on':''}" href="#/bible/NT">العهد الجديد</a></div><div class="books">${I.map((b,i)=>b.t===t?`<a class="t" href="#/book/${i}"><div class="c">${svg('book',26)}</div><b>${b.n}</b><i>${ar(b.c)} إصحاحًا</i></a>`:'').join('')}</div>`+CREDIT;return}}
+   $.innerHTML=banner('الكتاب المقدس','#/')+`<div class="tabs"><a class="${t=='OT'?'on':''}" href="#/bible/OT">العهد القديم</a><a class="${t=='NT'?'on':''}" href="#/bible/NT">العهد الجديد</a></div>${VT()}<div class="books ${VW()}">${I.map((b,i)=>b.t===t?`<a class="t" href="#/book/${i}"><div class="c">${svg('book',26)}</div><b>${b.n}</b><i>${ar(b.c)} إصحاحًا</i></a>`:'').join('')}</div>`+CREDIT;return}}
  if(p[0]==='book'){nav(2);const I=await index(),i=+p[1],b=I[i];
-  if(p.length===2){$.innerHTML=banner(b.n,'#/bible/'+b.t)+`<div class="chs">${Array.from({length:b.c},(_,k)=>`<a href="#/book/${i}/${k+1}">${ar(k+1)}</a>`).join('')}</div>`+CREDIT;return}
+  if(p.length===2){$.innerHTML=banner(b.n,'#/bible/'+b.t)+`${VT()}<div class="chs ${VW()}">${Array.from({length:b.c},(_,k)=>`<a href="#/book/${i}/${k+1}">${ar(k+1)}</a>`).join('')}</div>`+CREDIT;return}
   const c=+p[2];$.innerHTML=banner(`${b.n} ${ar(c)}`,'#/book/'+i)+'<div class="soon">...</div>';
   const d=BIBLE.books[i].ch;
   const nx=c<b.c?`<a href="#/book/${i}/${c+1}">التالي ‹</a>`:'',pv=c>1?`<a href="#/book/${i}/${c-1}">› السابق</a>`:'';
