@@ -18,7 +18,10 @@ const banner=(t,back)=>`<div class="banner">${back?`<a class="back" href="${back
 const VW=()=>localStorage.vw==='list'?'list':'grid';
 const VT=()=>`<button class="vt" onclick="tv()">${VW()==='list'?'▦ عرض شبكي':'☰ عرض قائمة'}</button>`;
 function tv(){localStorage.vw=VW()==='list'?'grid':'list';route()}
-const HRS=[['باكر','الساعة الأولى، ٦ صباحًا'],['الثالثة','الساعة الثالثة، ٩ صباحًا'],['السادسة','الساعة السادسة، ١٢ ظهرًا'],['التاسعة','الساعة التاسعة، ٣ عصرًا'],['الغروب','الساعة الحادية عشرة، ٥ مساءً'],['النوم','الساعة الثانية عشرة، ٩ مساءً'],['نصف الليل','صلاة نصف الليل'],['الستار','صلاة الستار']];
+const HRS=[['باكر','الساعة الأولى، ٦ صباحًا','Prime'],['الثالثة','الساعة الثالثة، ٩ صباحًا','Terce'],['السادسة','الساعة السادسة، ١٢ ظهرًا','Sext'],['التاسعة','الساعة التاسعة، ٣ عصرًا','None'],['الغروب','الساعة الحادية عشرة، ٥ مساءً','Vespers'],['النوم','الساعة الثانية عشرة، ٩ مساءً','Compline'],['نصف الليل ١','الخدمة الأولى','Midnight_1'],['نصف الليل ٢','الخدمة الثانية','Midnight_2'],['نصف الليل ٣','الخدمة الثالثة','Midnight_3'],['الستار','صلاة الستار','Viel']];
+let AG=null;
+const ACREDIT='<div class="credit">نصوص الأجبية: النص التقليدي للكنيسة القبطية الأرثوذكسية، مأخوذ من تطبيق «الأجبية» المفتوح المصدر (github.com/abanoubha/agpeya).</div>';
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 function fb(){localStorage.fbold=localStorage.fbold==='1'?'0':'1';document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400')}
 document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400');
 function nav(a){document.getElementById('n1').className=a==1?'on':'';document.getElementById('n2').className=a==2?'on':''}
@@ -28,10 +31,11 @@ async function route(){
  if(p[0]==='soon'){nav(0);$.innerHTML=banner(p[1],'#/')+`<div class="soon">قسم ${p[1]} قيد الإعداد.<br>سيُضاف قريبًا.</div>`;return}
 
  if(p[0]==='agpeya'){nav(0);
-  if(p.length===1){$.innerHTML=banner('الأجبية','#/')+VT()+`<div class="books ${VW()}">${HRS.map((h,i)=>`<a class="t" href="#/agpeya/${i}"><div class="c">${svg('clock',26)}</div><b>${h[0]}</b><i>${h[1]}</i></a>`).join('')}</div><div class="credit">نصوص الساعات قيد التوثيق من مصدر مرخّص.</div>`;return}
+  if(p.length===1){$.innerHTML=banner('الأجبية','#/')+VT()+`<div class="books ${VW()}">${HRS.map((h,i)=>`<a class="t" href="#/agpeya/${i}"><div class="c">${svg('clock',26)}</div><b>${h[0]}</b><i>${h[1]}</i></a>`).join('')}</div>`+ACREDIT;return}
   const h=HRS[+p[1]];if(!h){location.hash='#/agpeya';return}
-  const I=await index(),ps=BIBLE.books[18].ch[50],mt=BIBLE.books[39].ch[5].slice(8,13);
-  $.innerHTML=banner('صلاة '+h[0],'#/agpeya')+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read"><h3>الصلاة الربانية</h3><p>${mt.join(' ')}</p><h3>المزمور ٥١ (الخمسون)</h3>${ps.map((v,k)=>`<p><sup>${ar(k+1)}</sup>${v}</p>`).join('')}<p class="soon" style="margin:24px 0;font-size:17px">باقي صلوات الساعة قيد الإعداد إلى حين توثيق مصدر نصها.</p></div>`+CREDIT;window.scrollTo(0,0);return}
+  if(!AG)AG=await (await fetch('39-agpeya.json')).json();
+  const body=AG[h[2]].map(s=>(s.t?`<h3>${esc(s.t)}</h3>`:'')+s.c.split(/\n\n+/).map(q=>`<p>${esc(q).replace(/\n/g,'<br>')}</p>`).join('')).join('');
+  $.innerHTML=banner('صلاة '+h[0],'#/agpeya')+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`+ACREDIT;window.scrollTo(0,0);return}
  if(p[0]==='bible'){nav(2);const I=await index();
   if(p.length===1||p[1]==='OT'||p[1]==='NT'){const t=p[1]==='NT'?'NT':'OT';
    $.innerHTML=banner('الكتاب المقدس','#/')+`<div class="tabs"><a class="${t=='OT'?'on':''}" href="#/bible/OT">العهد القديم</a><a class="${t=='NT'?'on':''}" href="#/bible/NT">العهد الجديد</a></div>${VT()}<div class="books ${VW()}">${I.map((b,i)=>b.t===t?`<a class="t" href="#/book/${i}"><div class="c">${svg('book',26)}</div><b>${b.n}</b><i>${ar(b.c)} إصحاحًا</i></a>`:'').join('')}</div>`+CREDIT;return}}
