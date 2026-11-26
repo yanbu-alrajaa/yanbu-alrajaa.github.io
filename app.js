@@ -147,7 +147,7 @@ const _sm=document.createElement('style');_sm.textContent='.vds{padding:18px;dis
 async function route(){
  hfix();PARTS=null;cd();
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
- if(!p.length){nav(1);$.innerHTML=`<div class="lg"><img class="logo" src="33-logo.jpg" alt="ينبوع الرجاء"></div><div class="grid6">${SEC.map(s=>`<a class="s" href="${s[2]}"><div class="c">${svg('h_'+s[1],46)}</div>${s[0]}</a>`).join('')}</div><a class="vodp" id="vodc" href="#/vod"></a>`;vodfill();return}
+ if(!p.length){nav(1);$.innerHTML=`<div class="lg"><img class="logo" src="33-logo.jpg" alt="ينبوع الرجاء"></div><div class="grid6">${SEC.map(s=>`<a class="s" href="${s[2]}"><div class="c">${svg('h_'+s[1],46)}</div>${s[0]}</a>`).join('')}</div>`;return}
 
  if(p[0]==='settings'){nav(3);YRS.page($);return}
  if(p[0]==='media'){nav(0);let M=[];try{M=await (await fetch('media.json?x='+Date.now())).json()}catch(e){}
@@ -207,7 +207,8 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v82';
+const APPV='v83';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
+{const _g=document.createElement('style');_g.textContent='#app>.grid6{padding-bottom:8px!important}';document.head.append(_g)}
