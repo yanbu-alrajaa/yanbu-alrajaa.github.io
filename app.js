@@ -90,16 +90,20 @@ const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 function fb(){localStorage.fbold=localStorage.fbold==='1'?'0':'1';document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400')}
 document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400');
 function nav(a){document.getElementById('n1').className=a==1?'on':'';document.getElementById('n2').className=a==2?'on':''}
-const OCC=[['crown','الإكليل','occ-crown.json']];let OD={};
+const OCC=[['bap','المعمودية',[["تحليل المرأة (بعد ولادة ذكر)", "occ-bap-1.json"], ["تحليل المرأة (بعد ولادة أنثى)", "occ-bap-2.json"], ["ترتيب المعمودية المقدسة", "occ-bap-3.json"], ["تقديس ماء العماد", "occ-bap-4.json"], ["مسحة الميرون", "occ-bap-5.json"], ["صلاة حل زنار المعمدين", "occ-bap-6.json"], ["صلاة الحميم", "occ-bap-7.json"]]],['crown','الإكليل',[['الإكليل','occ-crown.json']]]];let OD={};
 const cpt=t=>/[\u2C80-\u2CFF]/.test(t)?`<span class="cp">${esc(t)}</span>`:esc(t);
 async function occr(p){nav(0);PARTS=null;DP.innerHTML='';
- if(!p[1]){$.innerHTML=banner('الأعياد والمناسبات','#/')+VT()+`<div class="books ${VW()}">${OCC.map(o=>`<a class="t" href="#/occ/${o[0]}"><div class="c">${svg('cal',26)}</div><b>${o[1]}</b></a>`).join('')}</div>`;return}
+ if(!p[1]){$.innerHTML=banner('الأعياد والمناسبات','#/')+VT()+`<div class="books ${VW()}">${OCC.map(o=>`<a class="t" href="#/occ/${o[0]}"><div class="c">${svg('cal',26)}</div><b>${o[1]}</b>${o[2].length>1?`<i>${ar(o[2].length)} أجزاء</i>`:''}</a>`).join('')}</div>`;return}
  const o=OCC.find(x=>x[0]===p[1]);if(!o){location.hash='#/occ';return}
- if(!OD[o[0]])try{OD[o[0]]=await (await fetch(o[2])).json()}catch(e){}
- const d=OD[o[0]];if(!d){$.innerHTML=banner(o[1],'#/occ')+'<div class="soon">تعذّر تحميل النص. جرّب تاني.</div>';return}
- setParts('أجزاء '+o[1],d.map(x=>({l:x.t?cpt(x.t):'المقدمة'})));
+ const one=o[2].length===1;
+ if(!one&&p[2]===undefined){$.innerHTML=banner(o[1],'#/occ')+VT()+`<div class="books ${VW()}">${o[2].map((d,i)=>`<a class="t" href="#/occ/${o[0]}/${i}"><div class="c">${svg('cal',26)}</div><b>${esc(d[0])}</b></a>`).join('')}</div>`;return}
+ const di=one?0:+p[2],dd=o[2][di];if(!dd){location.hash='#/occ/'+o[0];return}
+ const back=one?'#/occ':'#/occ/'+o[0],ttl=one?o[1]:dd[0];
+ if(!OD[dd[1]])try{OD[dd[1]]=await (await fetch(dd[1])).json()}catch(e){}
+ const d=OD[dd[1]];if(!d){$.innerHTML=banner(ttl,back)+'<div class="soon">تعذّر تحميل النص. جرّب تاني.</div>';return}
+ setParts('أجزاء: '+ttl,d.map(x=>({l:x.t?cpt(x.t):'المقدمة'})));
  const body=d.map((s,k)=>`<div id="s${k}">`+(s.t?`<h3>${cpt(s.t)}</h3>`:'')+s.p.map(q=>`<p class="${q[0]==='r'?'rl':''}">${esc(q[1])}</p>`).join('')+'</div>').join('');
- $.innerHTML=banner(o[1],'#/occ')+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`;window.scrollTo(0,0)}
+ $.innerHTML=banner(ttl,back)+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`;window.scrollTo(0,0)}
 const _s5=document.createElement('style');_s5.textContent='.read p.rl{color:#9a7b1c;font-weight:700;margin:14px 0 0}.read .cp,.dr .cp{font-family:CopticYR,\'Noto Sans Coptic\',serif;direction:ltr}';document.head.append(_s5);
 async function route(){
  hfix();PARTS=null;cd();
@@ -149,13 +153,13 @@ function fs(d){const v=Math.max(18,Math.min(40,(+localStorage.fs||24)+d));localS
 document.documentElement.style.setProperty('--fs',(localStorage.fs||24)+'px');
 let N=-1,PH=null;
 const nz=h=>(h&&h!=='#')?h:'#/';
-function par(h){const p=nz(h).replace(/^#/,'').split('/').filter(Boolean);if(!p.length)return null;if(p[0]==='lit'&&p.length>1)return '#/lit';if(p[0]==='agpeya'&&p.length>1)return '#/agpeya';if(p[0]==='occ'&&p.length>1)return '#/occ';if(p[0]==='book'){if(p.length>2)return '#/book/'+p[1];return '#/bible/'+(idx&&idx[+p[1]]?idx[+p[1]].t:(+p[1]<39?'OT':'NT'))}return '#/'}
+function par(h){const p=nz(h).replace(/^#/,'').split('/').filter(Boolean);if(!p.length)return null;if(p[0]==='lit'&&p.length>1)return '#/lit';if(p[0]==='agpeya'&&p.length>1)return '#/agpeya';if(p[0]==='occ'&&p.length>1)return p.length>2?'#/occ/'+p[1]:'#/occ';if(p[0]==='book'){if(p.length>2)return '#/book/'+p[1];return '#/bible/'+(idx&&idx[+p[1]]?idx[+p[1]].t:(+p[1]<39?'OT':'NT'))}return '#/'}
 function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='number'){back=st.n<N;N=st.n}else{N++;history.replaceState({n:N},'')}
  const cur=nz(location.hash);if(back&&PH&&PH!=='#/'&&cur!==par(PH))history.replaceState({n:N},'',par(PH));PH=nz(location.hash)}
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v17';
+const APPV='v18';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
