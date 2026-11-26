@@ -44,3 +44,5 @@ html[data-th=resurrection] .dr a.act{background:#fff0bd;color:#3b2a0a;box-shadow
 html[data-th=resurrection] .syn .sc b,html[data-th=resurrection] .syn .sb,html[data-th=resurrection] .syn h3,html[data-th=resurrection] .rdp .rp b{color:#9a6f10}
 html[data-th=resurrection] nav{border-top-color:#ecd48a}
 html[data-th=resurrection] .logo{mix-blend-mode:multiply}
+html:is([data-th=dark],[data-th=passion]) .dr h4{color:#f4f1e6;-webkit-text-stroke:.7px #6fa8d6;paint-order:stroke fill}
+html[data-th=passion] .dr h4{color:#fbe9eb;-webkit-text-stroke:.7px #c24b5e}
