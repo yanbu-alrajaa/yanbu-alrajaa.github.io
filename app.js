@@ -132,6 +132,7 @@ async function route(){
 
  if(p[0]==='settings'){nav(3);YRS.page($);return}
  if(p[0]==='media'){nav(0);let M=[];try{M=await (await fetch('media.json?x='+Date.now())).json()}catch(e){}
+  if(!Array.isArray(M))M=[];if(!M.some(x=>x.id==='a'))M.unshift({id:'a',title:'آيات وكلمات منفعة',icon:'book',videos:[{id:'mMZAghmJrVI',title:'آية اليوم: إشعياء ٤١: ١٠',s:1}]});
   if(!p[1]){$.innerHTML=banner('ميديا','#/')+`<div class="soc">${M.map(c=>`<a href="#/media/${c.id}"><div class="c">${svg(c.icon,30)}</div>${esc(c.title)}<i>${c.videos.length?ar(c.videos.length)+' فيديو':'قريبا'} ›</i></a>`).join('')}</div>`;return}
   const c=M.find(x=>x.id===p[1]);if(!c){location.hash='#/media';return}
   $.innerHTML=banner(c.title,'#/media')+`<div class="vds">${c.videos.length?c.videos.map(v=>`<div class="vc"><div class="vt${v.s?' sh':''}" onclick="ytp(this,'${v.id}',${v.s?1:0})" style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"><span>▶</span></div><div class="vi"><b>${esc(v.title)}</b><a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">فتح في يوتيوب ›</a></div></div>`).join(''):'<div class="ve"><div class="c">'+svg('play',30)+'</div>لسه مفيش فيديوهات في المجموعة دي.<br>هتتضاف قريب.</div>'}</div>`;return}
@@ -184,7 +185,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v57';
+const APPV='v58';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
