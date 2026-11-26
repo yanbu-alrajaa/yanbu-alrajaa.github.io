@@ -63,7 +63,7 @@ function rdv(segs,ov,bi){const o=[];for(const [c,r] of segs){for(const x of r.sp
 async function rdr(p){nav(0);PARTS=null;DP.innerHTML='';await load();const td=iso(new Date());let k=/^\d{4}-\d\d-\d\d$/.test(p[1]||'')?p[1]:td;const f=k<'2027-05-01'?'rd1':'rd2';
  try{if(!RD[f])RD[f]=await (await fetch(f+'.json')).json()}catch(x){}
  const dt=new Date(k+'T12:00:00'),sh=n=>{const q=new Date(dt);q.setDate(q.getDate()+n);return iso(q)},e=(RD.rd1&&RD.rd1[k])||(RD.rd2&&RD.rd2[k]);const c=g2c(dt);
- let body='';if(e)body=e.map(s=>`<h2>${esc(s[0])}</h2>`+s[1].map(u=>`<h3>${esc(u[0])}</h3>`+u[1].map(q=>{const bk=BIBLE.books[q[0]];const nm=bk?bk.n:'';const t=rdv(q[2],q[3],q[0]);return t?`<div class="rp"><b>${esc(nm)} ${esc(q[1])}</b><p>${t}</p></div>`:''}).join('')).join('')).join('');
+ let body='';if(e)body=e.map(s=>`<h2>${esc(s[0])}</h2>`+s[1].map(u=>`<h3>${esc(u[0])}</h3>`+u[1].map(q=>{const bk=BIBLE.books[q[0]];const nm=bk?bk.n:'';const t=rdv(q[2],q[3],q[0]);return t?`<div class="rp"><b>${esc(nm)} ${ar(q[1])}</b><p>${t}</p></div>`:''}).join('')).join('')).join('');
  else body='<div class="soon">مفيش قراءات متاحة لليوم ده.</div>';
  $.innerHTML=banner('القراءات اليومية','#/')+`<div class="syn rdp"><div class="sd"><a href="#/rd/${sh(-1)}" class="sb">›</a><div class="sc"><b>${DAYN[dt.getDay()]} ${ar(dt.getDate())} ${GMN[dt.getMonth()]} ${ar(dt.getFullYear())}</b><i>${k===td?'اليوم · ':''}${ar(c.d)} ${CM[c.m-1]} ${ar(c.y)} للشهداء</i></div><a href="#/rd/${sh(1)}" class="sb">‹</a></div><div class="sp"><input type="date" id="rdd" value="${k}" min="2026-11-26" max="2027-12-30" onchange="location.hash='#/rd/'+this.value">${k===td?'':'<a href="#/rd" class="sb2">اليوم</a>'}</div>${body}<div class="credit">جدول القراءات: من مشروع Katameros (github.com/pierresaid/katameros-api)، رخصة MIT. نص الكتاب المقدس: فان دايك.</div></div>`;window.scrollTo(0,0)}
 const _s4=document.createElement('style');_s4.textContent='.rdp h2{color:#9a7b1c;margin:24px 0 4px;font-size:21px;border-bottom:1.5px solid #e3c77a}.rdp .rp{margin:8px 0 14px}.rdp .rp b{color:#1b2f55;font-size:16px}.rdp sup{color:#9a7b1c;font-size:11px;margin-left:2px}.rdp input[type=date]{font:inherit;flex:1;padding:8px;border-radius:12px;border:1.5px solid var(--line);background:#fffdf6;color:#1b2f55}';document.head.appendChild(_s4);
@@ -143,7 +143,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v14';
+const APPV='v15';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
