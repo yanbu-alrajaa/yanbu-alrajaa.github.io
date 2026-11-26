@@ -18,7 +18,7 @@ const VODL=[['إشعياء',41,10],['يوحنا',14,27],['فيلبي',4,6],['ا�
 async function vodr(){await load();const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),r=VODL[n%VODL.length],b=BIBLE.books.find(x=>x.n===r[0]),t=b&&b.ch[r[1]-1]&&b.ch[r[1]-1][r[2]-1];if(!t){$.innerHTML=banner('آية اليوم','#/')+'<p style="padding:20px">—</p>';return}
 $.innerHTML=banner('آية اليوم','#/')+`<div style="padding:26px 22px"><div style="background:var(--navy);color:#fff6dc;border:3px solid var(--gold);border-radius:22px;padding:26px 20px;text-align:center"><div style="color:var(--gold);font-weight:800;margin-bottom:14px">آية اليوم · ${ar(d.getDate())} / ${ar(d.getMonth()+1)}</div><div style="font-size:22px;line-height:2">${esc(t)}</div><div style="margin-top:16px;color:var(--gold);font-weight:800">${r[0]} ${ar(r[1])}: ${ar(r[2])}</div></div><a href="#/bible" style="display:block;text-align:center;margin-top:18px;color:var(--navy);font-weight:800">افتح الإصحاح كامل</a></div>`}
 
-async function vodfill(){try{await load();const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),r=VODL[n%VODL.length],b=BIBLE.books.find(x=>x.n===r[0]),t=b&&b.ch[r[1]-1]&&b.ch[r[1]-1][r[2]-1],e=document.getElementById('vodc');if(e&&t)e.innerHTML='<small>✦ آية اليوم</small><span>'+esc(t)+'</span><small>'+r[0]+' '+ar(r[1])+': '+ar(r[2])+'</small>'}catch(x){}}
+async function vodfill(){try{await load();const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),r=VODL[n%VODL.length],b=BIBLE.books.find(x=>x.n===r[0]),t=b&&b.ch[r[1]-1]&&b.ch[r[1]-1][r[2]-1],e=document.getElementById('vodc');if(e&&t){e.href='#/book/'+BIBLE.books.indexOf(b)+'/'+r[1]+'/'+r[2]}if(e&&t)e.innerHTML='<small>✦ آية اليوم</small><span>'+esc(t)+'</span><small>'+r[0]+' '+ar(r[1])+': '+ar(r[2])+'</small>'}catch(x){}}
 const SEC=[['الكتاب المقدس','book','#/bible'],['القداسات','chalice','#/lit'],['الأجبية','clock','#/agpeya'],['السنكسار','saint','#/syn'],['القراءات اليومية','rd','#/rd'],['الأعياد والمناسبات','cal','#/occ'],['تسابيح وألحان','music','#/soon/تسابيح وألحان'],['ميديا','play','#/media'],['سوشيال ميديا','share','#/social']];
 const CREDIT='<div class="credit">نص الكتاب المقدس: ترجمة سميث-فان دايك (١٨٦٥)، ملك عام.<br>المصدر: eBible.org (arb-vd)</div>';
 let idx=null;
@@ -189,7 +189,7 @@ async function route(){
   const c=+p[2];setParts('الإصحاحات: '+b.n,Array.from({length:b.c},(_,k)=>({l:b.n+' '+ar(k+1),h:'#/book/'+i+'/'+(k+1)})));$.innerHTML=banner(`${b.n} ${ar(c)}`,'#/book/'+i)+'<div class="soon">...</div>';
   const d=BIBLE.books[i].ch;
   const nx=c<b.c?`<a href="#/book/${i}/${c+1}">التالي ‹</a>`:'',pv=c>1?`<a href="#/book/${i}/${c-1}">› السابق</a>`:'';
-  $.innerHTML=banner(`${b.n} ${ar(c)}`,'#/book/'+i)+`<div class="ctl">${pv}<button onclick="fs(-2)">A-</button><button onclick="fs(2)">A+</button><button onclick="fb()" style="font-weight:900">B</button>${nx}</div><div class="read">${d[c-1].map((v,k)=>`<p><sup>${ar(k+1)}</sup>${v}</p>`).join('')}</div><div class="ctl">${pv}${nx}</div>`+CREDIT;window.scrollTo(0,0);return}
+  $.innerHTML=banner(`${b.n} ${ar(c)}`,'#/book/'+i)+`<div class="ctl">${pv}<button onclick="fs(-2)">A-</button><button onclick="fs(2)">A+</button><button onclick="fb()" style="font-weight:900">B</button>${nx}</div><div class="read">${d[c-1].map((v,k)=>`<p id="v${k+1}"${+p[3]===k+1?' style="background:#e8c56640;border-radius:10px;padding:4px 6px"':''}><sup>${ar(k+1)}</sup>${v}</p>`).join('')}</div><div class="ctl">${pv}${nx}</div>`+CREDIT;window.scrollTo(0,0);if(p[3]){const e=document.getElementById('v'+p[3]);if(e)setTimeout(()=>window.scrollTo(0,e.getBoundingClientRect().top+window.scrollY-260),50)}return}
  location.hash='#/'}
 function fs(d){const v=Math.max(18,Math.min(40,(+localStorage.fs||24)+d));localStorage.fs=v;document.documentElement.style.setProperty('--fs',v+'px')}
 document.documentElement.style.setProperty('--fs',(localStorage.fs||24)+'px');
@@ -204,7 +204,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v75';
+const APPV='v76';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
