@@ -72,7 +72,7 @@ async function route(){
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
  if(!p.length){nav(1);$.innerHTML=`<img class="logo" src="33-logo.jpg" alt="ينبوع الرجاء"><div class="grid6">${SEC.map(s=>`<a class="s" href="${s[2]}"><div class="c">${svg(s[1])}</div>${s[0]}</a>`).join('')}</div>`;return}
 
- if(p[0]==='social'){nav(0);const S=[['YouTube','play','https://www.youtube.com/@yanbu.alrajaa'],['Facebook','fb','https://www.facebook.com/profile.php?id=61596842011158'],['TikTok','music','https://www.tiktok.com/@yanbu.alrajaa'],['Instagram','cam','']];
+ if(p[0]==='social'){nav(0);const S=[['YouTube','play','https://www.youtube.com/@yanbu.alrajaa'],['Facebook','fb','https://www.facebook.com/profile.php?id=61596842011158'],['TikTok','music','https://www.tiktok.com/@yanbu.alrajaa'],['Instagram','cam','https://www.instagram.com/yanbualrajaa/']];
   $.innerHTML=banner('سوشيال ميديا','#/')+`<div class="soc">${S.map(s=>s[2]?`<a href="${s[2]}" target="_blank" rel="noopener"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>فتح ›</i></a>`:`<div class="n"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>قريبًا</i></div>`).join('')}</div>`;return}
  if(p[0]==='lit'){nav(0);
   if(p.length===1){$.innerHTML=banner('القداسات','#/')+VT()+`<div class="books ${VW()}">${LITM.map(l=>l[2]?`<a class="t" href="#/lit/${l[0]}"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>${ar(l[2])} جزءًا</i></a>`:`<div class="t" style="opacity:.55"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>قيد البحث عن مصدر نظيف</i></div>`).join('')}</div>`+LCREDIT;return}
@@ -118,7 +118,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v10';
+const APPV='v11';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
