@@ -12,7 +12,7 @@ fb:'<path d="M28 40V26h5l1-6h-6v-4c0-2 1-3 3-3h3V8h-5c-5 0-7 3-7 7v5h-5v6h5v14"/
 cam:'<rect x="9" y="9" width="30" height="30" rx="9"/><circle cx="24" cy="24" r="7"/><circle cx="33" cy="15" r="1.5"/>',
 music:'<path d="M19 33V12l16-4v21"/><circle cx="14" cy="33" r="5"/><circle cx="30" cy="29" r="5"/>'};
 const svg=(k,s=44)=>`<svg width="${s}" height="${s}" viewBox="0 0 48 48">${IC[k]}</svg>`;
-const SEC=[['الكتاب المقدس','book','#/bible'],['القداسات','chalice','#/lit'],['الأجبية','clock','#/agpeya'],['السنكسار','saint','#/syn'],['القراءات اليومية','rd','#/rd'],['الأعياد والمناسبات','cal','#/occ'],['تسابيح وألحان','music','#/soon/تسابيح وألحان'],['سوشيال ميديا','share','#/social'],['ميديا','play','#/media']];
+const SEC=[['الكتاب المقدس','book','#/bible'],['القداسات','chalice','#/lit'],['الأجبية','clock','#/agpeya'],['السنكسار','saint','#/syn'],['القراءات اليومية','rd','#/rd'],['الأعياد والمناسبات','cal','#/occ'],['تسابيح وألحان','music','#/soon/تسابيح وألحان'],['ميديا','play','#/media'],['سوشيال ميديا','share','#/social']];
 const CREDIT='<div class="credit">نص الكتاب المقدس: ترجمة سميث-فان دايك (١٨٦٥)، ملك عام.<br>المصدر: eBible.org (arb-vd)</div>';
 let idx=null;
 let BIBLE=null;
@@ -22,7 +22,7 @@ let PARTS=null;
 const banner=(t,back,x)=>`<div class="banner${x?' hs':''}">${back?`<a class="back" href="${back}" onclick="return gb()">›</a>`:''}<button class="mb" onclick="od('m')" aria-label="القائمة">☰</button>${PARTS?'<button class="mb pb" onclick="od(\'p\')" aria-label="الأجزاء">☷</button>':''}<h1>${t}</h1>${x||''}</div>`;
 const st=document.createElement('style');st.textContent=`.dr{position:fixed;top:0;bottom:0;width:78%;max-width:320px;background:#fffdf6;z-index:30;overflow:auto;padding:calc(20px + env(safe-area-inset-top)) 12px 20px;transition:transform .25s;box-shadow:0 0 30px #0005}.dl{left:0;transform:translateX(-110%)}.dr2{right:0;transform:translateX(110%)}.dr.on{transform:none}#ov{position:fixed;inset:0;background:#0006;z-index:29;display:none}#ov.on{display:block}.dr a{display:block;padding:13px 10px;border-bottom:1px solid #e0d4b0;color:#2b2418;text-decoration:none;font-size:18px;font-weight:700}.dr h4{color:#1f3a5f;margin:0 0 8px;font-size:19px}.mb{position:absolute;left:12px;top:calc(14px + env(safe-area-inset-top));background:#0007;color:#fff;border:0;border-radius:12px;padding:2px 10px;font-size:24px;z-index:3}.pb{left:64px}.read>div{scroll-margin-top:190px}`;document.head.append(st);
 const OV=document.createElement('div'),DM=document.createElement('div'),DP=document.createElement('div');OV.id='ov';DM.className='dr dl';DP.className='dr dr2';document.body.append(OV,DM,DP);
-DM.innerHTML='<h4>الأقسام</h4><a href="#/">الرئيسية</a><a href="#/bible">الكتاب المقدس</a><a href="#/agpeya">الأجبية</a><a href="#/lit">القداسات</a><a href="#/syn">السنكسار</a><a href="#/rd">القراءات اليومية</a><a href="#/occ">الأعياد والمناسبات</a><a href="#/soon/تسابيح وألحان">تسابيح وألحان</a><a href="#/social">سوشيال ميديا</a>';
+DM.innerHTML='<h4>الأقسام</h4><a href="#/">الرئيسية</a><a href="#/bible">الكتاب المقدس</a><a href="#/agpeya">الأجبية</a><a href="#/lit">القداسات</a><a href="#/syn">السنكسار</a><a href="#/rd">القراءات اليومية</a><a href="#/occ">الأعياد والمناسبات</a><a href="#/soon/تسابيح وألحان">تسابيح وألحان</a><a href="#/media">ميديا</a><a href="#/social">سوشيال ميديا</a>';
 DM.onclick=e=>{const a=e.target.closest('a');if(a&&!a.classList.contains('hm')&&!a.closest('.kp'))cd()};OV.onclick=()=>cd();
 const DMB=DM.innerHTML.replace('<a href="#/">الرئيسية</a>','').replace(/<a href/g,'<a class="mn" href');const HM='<div class="hmr"><a class="hm" href="javascript:void 0" onclick="tgx(this.nextElementSibling,\'hmp\')">⌂ الصفحة الرئيسية</a><button class="pl" aria-label="expand" onclick="tgx(this,\'hmp\')">+</button></div>';
 function tgx(a,id){const g=document.getElementById(id);const o=!g.classList.contains('o');a.textContent=o?'−':'+';const T=g._t;if(T)clearTimeout(T);
@@ -184,7 +184,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v54';
+const APPV='v55';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
