@@ -150,14 +150,13 @@ async function route(){
   const l=LITC[p[1]]||(LITC[p[1]]=await (await fetch('lit-'+p[1]+'.json')).json());
   setParts('أجزاء '+l.title,l.parts.map(x=>({l:esc(x.t)})));
   const hc=l.parts.some(s=>s.r.some(r=>r[2])),ht=l.parts.some(s=>s.r.some(r=>r[3]));
-  const c=LC(),cols=['a'];if(hc&&c.c)cols.push('c');if(ht&&c.t)cols.push('t');
-  if(!c.a&&cols.length>1)cols.shift();
+  const cols=ht?['a','t']:['a'];
   const fx=x=>esc(x||'').replace(/\n/g,'<br>').split('§').map((t,j)=>j?`<span class="rb">${t}</span>`:t).join('');
   const cell=(k,r)=>`<p class="${k==='c'?'cp':k==='t'?'tr':''}">${fx(k==='a'?r[1]:k==='c'?r[2]:r[3])}</p>`;
-  const rows=s=>{const o=[];for(let i=0;i<s.r.length;i++){let r=s.r[i];if(r[4]>1&&cols.includes('t')){const g=s.r.slice(i,i+r[4]);r=[r[0],g.map(x=>x[1]).join('\n'),g.map(x=>x[2]).filter(Boolean).join('\n'),r[3]];i+=g.length-1}o.push(r)}return o.map(r=>{const K=(!r[2]&&!r[3])?['a']:cols;return `<div class="lr c${K.length}" style="grid-template-columns:repeat(${K.length},1fr)">${r[0]?`<div class="sp">${esc(r[0])}</div>`:''}${K.map(k=>cell(k,r)).join('')}</div>`}).join('')};
+  const rows=s=>{const o=[];for(let i=0;i<s.r.length;i++){let r=s.r[i];if(r[4]>1&&cols.includes('t')){const g=s.r.slice(i,i+r[4]);r=[r[0],g.map(x=>x[1]).join('\n'),g.map(x=>x[2]).filter(Boolean).join('\n'),r[3]];i+=g.length-1}o.push(r)}return o.map(r=>{const K=!r[3]?['a']:cols;return `<div class="lr c${K.length}" style="grid-template-columns:repeat(${K.length},1fr)">${r[0]?`<div class="sp">${esc(r[0])}</div>`:''}${K.map(k=>cell(k,r)).join('')}</div>`}).join('')};
   const body=l.parts.map((s,k)=>s.o?`<div id="s${k}" class="op${s.s?' sc':''}"><h3 class="oh" onclick="to(${k})"><span class="pm">+</span>${esc(s.t)}<small>اختياري</small></h3><div class="ob" hidden>${rows(s)}</div></div>`:`<div id="s${k}"${s.s?' class="sc"':''}><h3>${esc(s.t)}</h3>${rows(s)}</div>`).join('');
   const bt=(k,t,h)=>h?`<button class="${c[k]?'on':''}" onclick="lt('${k}')">${t}</button>`:`<button disabled title="قريبا">${t} · قريبا</button>`;
-  $.innerHTML=banner(l.title,'#/lit',SWB(p[1]))+`<div class="lt">${bt('a','عربي',1)}${bt('c','قبطي',hc)}${bt('t','قبطي بحروف عربية',ht)}</div><div class="ctl"><button onclick="fs(-2)">A-</button><button onclick="fs(2)">A+</button><button onclick="fb()" style="font-weight:900">B</button></div>${l.note?`<div class="lnote">${l.note} <a href="#/lit/basil">القداس الباسيلي ›</a></div>`:''}<div class="read">${body}</div>`+LCREDIT;window.scrollTo(0,0);swd();return}
+  $.innerHTML=banner(l.title,'#/lit',SWB(p[1]))+`<div class="ctl"><button onclick="fs(-2)">A-</button><button onclick="fs(2)">A+</button><button onclick="fb()" style="font-weight:900">B</button></div>${l.note?`<div class="lnote">${l.note} <a href="#/lit/basil">القداس الباسيلي ›</a></div>`:''}<div class="read">${body}</div>`+LCREDIT;window.scrollTo(0,0);swd();return}
  if(p[0]==='syn'){await synr(p);return}
  if(p[0]==='rd'){await rdr(p);return}
  if(p[0]==='occ'){await occr(p);return}
@@ -194,7 +193,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v67';
+const APPV='v68';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
