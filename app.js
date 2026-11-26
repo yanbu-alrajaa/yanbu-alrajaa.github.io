@@ -96,7 +96,7 @@ const VT=()=>`<button class="vt" onclick="tv()">${VW()==='list'?'▦ عرض شب
 function tv(){localStorage.vw=VW()==='list'?'grid':'list';route()}
 const HRS=[['باكر','الساعة الأولى، ٦ صباحا','Prime'],['الثالثة','الساعة الثالثة، ٩ صباحا','Terce'],['السادسة','الساعة السادسة، ١٢ ظهرا','Sext'],['التاسعة','الساعة التاسعة، ٣ عصرا','None'],['الغروب','الساعة الحادية عشرة، ٥ مساء','Vespers'],['النوم','الساعة الثانية عشرة، ٩ مساء','Compline'],['نصف الليل ١','الخدمة الأولى','Midnight_1'],['نصف الليل ٢','الخدمة الثانية','Midnight_2'],['نصف الليل ٣','الخدمة الثالثة','Midnight_3'],['الستار','صلاة الستار','Viel']];
 let AG=null;
-const ACREDIT='<div class="credit">نصوص الأجبية: النص التقليدي للكنيسة القبطية الأرثوذكسية، مأخوذ من تطبيق «الأجبية» المفتوح المصدر (github.com/abanoubha/agpeya).</div>';
+const ACREDIT='<div class="credit">نصوص الأجبية: النص التقليدي للكنيسة القبطية الأرثوذكسية.</div>';
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 function fb(){localStorage.fbold=localStorage.fbold==='1'?'0':'1';document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400')}
 document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400');
@@ -171,7 +171,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v45';
+const APPV='v46';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
