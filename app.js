@@ -93,7 +93,7 @@ function lt(k){const c=LC();c[k]=c[k]?0:1;if(!c.a&&!c.c&&!c.t)c.a=1;localStorage
 const VW=()=>localStorage.vw==='list'?'list':'grid';
 const VT=()=>`<button class="vt" onclick="tv()">${VW()==='list'?'▦ عرض شبكي':'☰ عرض قائمة'}</button>`;
 function tv(){localStorage.vw=VW()==='list'?'grid':'list';route()}
-const HRS=[['باكر','الساعة الأولى، ٦ صباحًا','Prime'],['الثالثة','الساعة الثالثة، ٩ صباحًا','Terce'],['السادسة','الساعة السادسة، ١٢ ظهرًا','Sext'],['التاسعة','الساعة التاسعة، ٣ عصرًا','None'],['الغروب','الساعة الحادية عشرة، ٥ مساءً','Vespers'],['النوم','الساعة الثانية عشرة، ٩ مساءً','Compline'],['نصف الليل ١','الخدمة الأولى','Midnight_1'],['نصف الليل ٢','الخدمة الثانية','Midnight_2'],['نصف الليل ٣','الخدمة الثالثة','Midnight_3'],['الستار','صلاة الستار','Viel']];
+const HRS=[['باكر','الساعة الأولى، ٦ صباحا','Prime'],['الثالثة','الساعة الثالثة، ٩ صباحا','Terce'],['السادسة','الساعة السادسة، ١٢ ظهرا','Sext'],['التاسعة','الساعة التاسعة، ٣ عصرا','None'],['الغروب','الساعة الحادية عشرة، ٥ مساء','Vespers'],['النوم','الساعة الثانية عشرة، ٩ مساء','Compline'],['نصف الليل ١','الخدمة الأولى','Midnight_1'],['نصف الليل ٢','الخدمة الثانية','Midnight_2'],['نصف الليل ٣','الخدمة الثالثة','Midnight_3'],['الستار','صلاة الستار','Viel']];
 let AG=null;
 const ACREDIT='<div class="credit">نصوص الأجبية: النص التقليدي للكنيسة القبطية الأرثوذكسية، مأخوذ من تطبيق «الأجبية» المفتوح المصدر (github.com/abanoubha/agpeya).</div>';
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
@@ -110,7 +110,7 @@ async function occr(p){nav(0);PARTS=null;DP.innerHTML='';
  const di=one?0:+p[2],dd=o[2][di];if(!dd){location.hash='#/occ/'+o[0];return}
  const back=one?'#/occ':'#/occ/'+o[0],ttl=one?o[1]:dd[0];
  if(!OD[dd[1]])try{OD[dd[1]]=await (await fetch(dd[1])).json()}catch(e){}
- const d=OD[dd[1]];if(!d){$.innerHTML=banner(ttl,back)+'<div class="soon">تعذّر تحميل النص. جرّب تاني.</div>';return}
+ const d=OD[dd[1]];if(!d){$.innerHTML=banner(ttl,back)+'<div class="soon">تعذر تحميل النص. جرب تاني.</div>';return}
  setParts('أجزاء: '+ttl,d.map(x=>({l:x.t?cpt(x.t):'المقدمة'})));
  const body=d.map((s,k)=>`<div id="s${k}">`+(s.t?`<h3>${cpt(s.t)}</h3>`:'')+s.p.map(q=>`<p class="${q[0]==='r'?'rl':''}">${esc(q[1])}</p>`).join('')+'</div>').join('');
  $.innerHTML=banner(ttl,back)+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`;window.scrollTo(0,0)}
@@ -122,9 +122,9 @@ async function route(){
 
  if(p[0]==='settings'){nav(3);YRS.page($);return}
  if(p[0]==='social'){nav(0);const S=[['YouTube','play','https://www.youtube.com/@yanbu.alrajaa'],['Facebook','fb','https://www.facebook.com/profile.php?id=61596842011158'],['TikTok','music','https://www.tiktok.com/@yanbu.alrajaa'],['Instagram','cam','https://www.instagram.com/yanbualrajaa/']];
-  $.innerHTML=banner('سوشيال ميديا','#/')+`<div class="soc">${S.map(s=>s[2]?`<a href="${s[2]}" target="_blank" rel="noopener"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>فتح ›</i></a>`:`<div class="n"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>قريبًا</i></div>`).join('')}</div>`;return}
+  $.innerHTML=banner('سوشيال ميديا','#/')+`<div class="soc">${S.map(s=>s[2]?`<a href="${s[2]}" target="_blank" rel="noopener"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>فتح ›</i></a>`:`<div class="n"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>قريبا</i></div>`).join('')}</div>`;return}
  if(p[0]==='lit'){nav(0);
-  if(p.length===1){$.innerHTML=banner('القداسات','#/')+VT()+`<div class="books ${VW()}">${LITM.map(l=>l[2]?`<a class="t" href="#/lit/${l[0]}"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>${ar(l[2])} جزءًا</i></a>`:`<div class="t" style="opacity:.55"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>قيد البحث عن مصدر نظيف</i></div>`).join('')}</div>`+LCREDIT;return}
+  if(p.length===1){$.innerHTML=banner('القداسات','#/')+VT()+`<div class="books ${VW()}">${LITM.map(l=>l[2]?`<a class="t" href="#/lit/${l[0]}"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>${ar(l[2])} جزءا</i></a>`:`<div class="t" style="opacity:.55"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>قيد البحث عن مصدر نظيف</i></div>`).join('')}</div>`+LCREDIT;return}
   if(!LITM.find(x=>x[0]===p[1]&&x[2])){location.hash='#/lit';return}
   const l=LITC[p[1]]||(LITC[p[1]]=await (await fetch('lit-'+p[1]+'.json')).json());
   setParts('أجزاء '+l.title,l.parts.map(x=>({l:esc(x.t)})));
@@ -135,12 +135,12 @@ async function route(){
   const cell=(k,r)=>`<p class="${k==='c'?'cp':k==='t'?'tr':''}">${fx(k==='a'?r[1]:k==='c'?r[2]:r[3])}</p>`;
   const rows=s=>{const o=[];for(let i=0;i<s.r.length;i++){let r=s.r[i];if(r[4]>1&&cols.includes('t')){const g=s.r.slice(i,i+r[4]);r=[r[0],g.map(x=>x[1]).join('\n'),g.map(x=>x[2]).filter(Boolean).join('\n'),r[3]];i+=g.length-1}o.push(r)}return o.map(r=>`<div class="lr c${cols.length}" style="grid-template-columns:repeat(${cols.length},1fr)">${r[0]?`<div class="sp">${esc(r[0])}</div>`:''}${cols.map(k=>cell(k,r)).join('')}</div>`).join('')};
   const body=l.parts.map((s,k)=>s.o?`<div id="s${k}" class="op${s.s?' sc':''}"><h3 class="oh" onclick="to(${k})"><span class="pm">+</span>${esc(s.t)}<small>اختياري</small></h3><div class="ob" hidden>${rows(s)}</div></div>`:`<div id="s${k}"${s.s?' class="sc"':''}><h3>${esc(s.t)}</h3>${rows(s)}</div>`).join('');
-  const bt=(k,t,h)=>h?`<button class="${c[k]?'on':''}" onclick="lt('${k}')">${t}</button>`:`<button disabled title="قريبًا">${t} · قريبًا</button>`;
+  const bt=(k,t,h)=>h?`<button class="${c[k]?'on':''}" onclick="lt('${k}')">${t}</button>`:`<button disabled title="قريبا">${t} · قريبا</button>`;
   $.innerHTML=banner(l.title,'#/lit',SWB(p[1]))+`<div class="lt">${bt('a','عربي',1)}${bt('c','قبطي',hc)}${bt('t','قبطي بحروف عربية',ht)}</div><div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div>${l.note?`<div class="lnote">${l.note} <a href="#/lit/basil">القداس الباسيلي ›</a></div>`:''}<div class="read">${body}</div>`+LCREDIT;window.scrollTo(0,0);swd();return}
  if(p[0]==='syn'){await synr(p);return}
  if(p[0]==='rd'){await rdr(p);return}
  if(p[0]==='occ'){await occr(p);return}
- if(p[0]==='soon'){nav(0);$.innerHTML=banner(p[1],'#/')+`<div class="soon">قسم ${p[1]} قيد الإعداد.<br>سيُضاف قريبًا.</div>`;return}
+ if(p[0]==='soon'){nav(0);$.innerHTML=banner(p[1],'#/')+`<div class="soon">قسم ${p[1]} قيد الإعداد.<br>سيضاف قريبا.</div>`;return}
 
  if(p[0]==='agpeya'){nav(0);
   if(p.length===1){$.innerHTML=banner('الأجبية','#/')+VT()+`<div class="books ${VW()}">${HRS.map((h,i)=>`<a class="t" href="#/agpeya/${i}"><div class="c">${svg('clock',26)}</div><b>${h[0]}</b><i>${h[1]}</i></a>`).join('')}</div>`+ACREDIT;return}
@@ -152,7 +152,7 @@ async function route(){
   $.innerHTML=banner('صلاة '+h[0],'#/agpeya')+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`+ACREDIT;window.scrollTo(0,0);swd();return}
  if(p[0]==='bible'){nav(2);const I=await index();
   if(p.length===1||p[1]==='OT'||p[1]==='NT'){const t=p[1]==='NT'?'NT':'OT';
-   $.innerHTML=banner('الكتاب المقدس','#/')+`<div class="tabs"><a class="${t=='OT'?'on':''}" href="#/bible/OT">العهد القديم</a><a class="${t=='NT'?'on':''}" href="#/bible/NT">العهد الجديد</a></div>${VT()}<div class="books ${VW()}">${I.map((b,i)=>b.t===t?`<a class="t" href="#/book/${i}"><div class="c">${svg('book',26)}</div><b>${b.n}</b><i>${ar(b.c)} إصحاحًا</i></a>`:'').join('')}</div>`+CREDIT;return}}
+   $.innerHTML=banner('الكتاب المقدس','#/')+`<div class="tabs"><a class="${t=='OT'?'on':''}" href="#/bible/OT">العهد القديم</a><a class="${t=='NT'?'on':''}" href="#/bible/NT">العهد الجديد</a></div>${VT()}<div class="books ${VW()}">${I.map((b,i)=>b.t===t?`<a class="t" href="#/book/${i}"><div class="c">${svg('book',26)}</div><b>${b.n}</b><i>${ar(b.c)} إصحاحا</i></a>`:'').join('')}</div>`+CREDIT;return}}
  if(p[0]==='book'){nav(2);const I=await index(),i=+p[1],b=I[i];
   if(p.length===2){$.innerHTML=banner(b.n,'#/bible/'+b.t)+`${VT()}<div class="chs ${VW()}">${Array.from({length:b.c},(_,k)=>`<a href="#/book/${i}/${k+1}">${ar(k+1)}</a>`).join('')}</div>`+CREDIT;return}
   const c=+p[2];setParts('الإصحاحات: '+b.n,Array.from({length:b.c},(_,k)=>({l:b.n+' '+ar(k+1),h:'#/book/'+i+'/'+(k+1)})));$.innerHTML=banner(`${b.n} ${ar(c)}`,'#/book/'+i)+'<div class="soon">...</div>';
@@ -170,7 +170,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v37';
+const APPV='v38';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
