@@ -24,14 +24,14 @@ const st=document.createElement('style');st.textContent=`.dr{position:fixed;top:
 const OV=document.createElement('div'),DM=document.createElement('div'),DP=document.createElement('div');OV.id='ov';DM.className='dr dl';DP.className='dr dr2';document.body.append(OV,DM,DP);
 DM.innerHTML='<h4>الأقسام</h4><a href="#/">الرئيسية</a><a href="#/bible">الكتاب المقدس</a><a href="#/agpeya">الأجبية</a><a href="#/lit">القداسات</a><a href="#/syn">السنكسار</a><a href="#/rd">القراءات اليومية</a><a href="#/occ">الأعياد والمناسبات</a><a href="#/soon/تسابيح وألحان">تسابيح وألحان</a><a href="#/social">سوشيال ميديا</a>';
 DM.onclick=e=>{if(e.target.tagName==='A')cd()};OV.onclick=()=>cd();
-const DMB=DM.innerHTML;
+const DMB=DM.innerHTML.replace('<a href="#/">الرئيسية</a>','');const HM='<a class="hm" href="#/" onclick="cd()">⌂ الصفحة الرئيسية</a>';
 function ctx(){const p=nz(location.hash).replace(/^#/,'').split('/').filter(Boolean);const a=(h,l,on)=>`<a href="${h}"${on?' class="cur"':''}>${l}</a>`;let o='';
  if(p[0]==='lit'&&p[1])o='<h4>القداسات</h4>'+LITM.filter(l=>l[2]).map(l=>l[0]===p[1]?`<a class="cur" href="javascript:void 0">${l[1]}</a>`:`<a href="javascript:void 0" onclick="sw('${l[0]}')">${l[1]}</a>`).join('');
  else if(p[0]==='agpeya'&&p[1]!==undefined)o='<h4>الأجبية: الساعات</h4>'+HRS.map((h,i)=>i===+p[1]?`<a class="cur" href="javascript:void 0">صلاة ${h[0]}</a>`:`<a href="javascript:void 0" onclick="swh(${i})">صلاة ${h[0]}</a>`).join('');
  else if(p[0]==='book'&&p[1]!==undefined&&idx&&idx[+p[1]]){const i=+p[1],b=idx[i];if(p[2])o='<h4>إصحاحات '+b.n+'</h4>'+Array.from({length:b.c},(_,k)=>a('#/book/'+i+'/'+(k+1),b.n+' '+ar(k+1),+p[2]===k+1)).join('');o+='<h4>'+(b.t==='NT'?'العهد الجديد':'العهد القديم')+'</h4>'+idx.map((x,j)=>x.t===b.t?a('#/book/'+j,x.n,j===i):'').join('')}
  return o}
 function cd(){DM.classList.remove('on');DP.classList.remove('on');OV.classList.remove('on')}
-function od(w){cd();if(w==='p'&&!PARTS)return;if(w==='m')DM.innerHTML=(ctx()||DMB)+'<div class="ver">النسخة '+APPV+'</div>';(w==='p'?DP:DM).classList.add('on');OV.classList.add('on')}
+function od(w){cd();if(w==='p'&&!PARTS)return;if(w==='m')DM.innerHTML=HM+(ctx()||DMB)+'<div class="ver">النسخة '+APPV+'</div>';if(w==='p'&&!DP.querySelector('.hm'))DP.insertAdjacentHTML('afterbegin',HM);(w==='p'?DP:DM).classList.add('on');OV.classList.add('on')}
 function to(i,f){const e=document.getElementById('s'+i);if(!e)return;const b=e.querySelector('.ob');if(!b)return;const o=f===undefined?b.hidden:f;b.hidden=!o;e.querySelector('.pm').textContent=o?'−':'+'}
 function gp(i){cd();to(i,true);const e=document.getElementById('s'+i);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})}
 const LN=s=>s.replace(/[\u064b-\u0652\u0640]/g,'').replace(/[إأآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^\u0621-\u064a ]/g,' ').replace(/\s+/g,' ').trim();
@@ -90,7 +90,7 @@ const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 function fb(){localStorage.fbold=localStorage.fbold==='1'?'0':'1';document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400')}
 document.documentElement.style.setProperty('--fw',localStorage.fbold==='1'?'700':'400');
 function nav(a){document.getElementById('n1').className=a==1?'on':'';document.getElementById('n2').className=a==2?'on':''}
-const OCC=[['bap','المعمودية',[["تحليل المرأة (بعد ولادة ذكر)", "occ-bap-1.json"], ["تحليل المرأة (بعد ولادة أنثى)", "occ-bap-2.json"], ["ترتيب المعمودية المقدسة", "occ-bap-3.json"], ["تقديس ماء العماد", "occ-bap-4.json"], ["مسحة الميرون", "occ-bap-5.json"], ["صلاة حل زنار المعمدين", "occ-bap-6.json"], ["صلاة الحميم", "occ-bap-7.json"]]],['crown','الإكليل',[['الإكليل','occ-crown.json']]],["lakkan","اللقان",[["قداس لقان عيد الغطاس","occ-lak-1.json"],["قداس لقان الخميس الكبير","occ-lak-2.json"],["قداس لقان عيد الرسل","occ-lak-3.json"]]]];let OD={};
+const OCC=[['bap','المعمودية',[["تحليل المرأة (بعد ولادة ذكر)", "occ-bap-1.json"], ["تحليل المرأة (بعد ولادة أنثى)", "occ-bap-2.json"], ["ترتيب المعمودية المقدسة", "occ-bap-3.json"], ["تقديس ماء العماد", "occ-bap-4.json"], ["مسحة الميرون", "occ-bap-5.json"], ["صلاة حل زنار المعمدين", "occ-bap-6.json"], ["صلاة الحميم", "occ-bap-7.json"]]],['crown','الإكليل',[['الإكليل','occ-crown.json']]],["lakkan","اللقان",[["قداس لقان عيد الغطاس","occ-lak-1.json"],["قداس لقان الخميس الكبير","occ-lak-2.json"],["قداس لقان عيد الرسل","occ-lak-3.json"]]],["funeral","الجناز",[["تجنيز الرجال الكبار","occ-fun-1.json"],["تجنيز النساء الكبار","occ-fun-2.json"],["تجنيز النساء في حالة الوفاة عند الوضع","occ-fun-3.json"],["تجنيز الصبيان","occ-fun-4.json"],["تجنيز البنات","occ-fun-5.json"],["تجنيز الشمامسة","occ-fun-6.json"],["تجنيز القمامصة والقسوس","occ-fun-7.json"],["تجنيز البطاركة والمطارنة والأساقفة","occ-fun-8.json"],["تجنيز الرهبان الكهنة","occ-fun-9.json"],["تجنيز الرهبان","occ-fun-10.json"],["تجنيز الراهبات","occ-fun-11.json"],["صلاة الثالث والاربعين","occ-fun-12.json"],["قداس الكلمة (يوم الأربعين)","occ-fun-13.json"],["الصلاة على القبر","occ-fun-14.json"]]]];let OD={};
 const cpt=t=>/[\u2C80-\u2CFF]/.test(t)?`<span class="cp">${esc(t)}</span>`:esc(t);
 async function occr(p){nav(0);PARTS=null;DP.innerHTML='';
  if(!p[1]){$.innerHTML=banner('الأعياد والمناسبات','#/')+VT()+`<div class="books ${VW()}">${OCC.map(o=>`<a class="t" href="#/occ/${o[0]}"><div class="c">${svg('cal',26)}</div><b>${o[1]}</b>${o[2].length>1?`<i>${ar(o[2].length)} أجزاء</i>`:''}</a>`).join('')}</div>`;return}
@@ -104,7 +104,7 @@ async function occr(p){nav(0);PARTS=null;DP.innerHTML='';
  setParts('أجزاء: '+ttl,d.map(x=>({l:x.t?cpt(x.t):'المقدمة'})));
  const body=d.map((s,k)=>`<div id="s${k}">`+(s.t?`<h3>${cpt(s.t)}</h3>`:'')+s.p.map(q=>`<p class="${q[0]==='r'?'rl':''}">${esc(q[1])}</p>`).join('')+'</div>').join('');
  $.innerHTML=banner(ttl,back)+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`;window.scrollTo(0,0)}
-const _s5=document.createElement('style');_s5.textContent='.read p.rl{color:#9a7b1c;font-weight:700;margin:14px 0 0}.read .cp,.dr .cp{font-family:CopticYR,\'Noto Sans Coptic\',serif;direction:ltr}';document.head.append(_s5);
+const _s5=document.createElement('style');_s5.textContent='.dr a.hm{position:sticky;top:0;z-index:2;background:#1f3a5f;color:#fff6dc;margin:calc(-20px - env(safe-area-inset-top)) -12px 16px;padding:calc(16px + env(safe-area-inset-top)) 22px 14px;border-bottom:3px solid #e3c77a;font-size:19px}.read p.rl{color:#9a7b1c;font-weight:700;margin:14px 0 0}.read .cp,.dr .cp{font-family:CopticYR,\'Noto Sans Coptic\',serif;direction:ltr}';document.head.append(_s5);
 async function route(){
  hfix();PARTS=null;cd();
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
@@ -159,7 +159,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v19';
+const APPV='v21';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
