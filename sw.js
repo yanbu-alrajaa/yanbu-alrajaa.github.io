@@ -1,4 +1,4 @@
-const C='yr-v49',A=['./','index.html','app.js','manifest.webmanifest','33-logo.jpg','34-banner.jpg','38-bible.json','39-agpeya.json','coptic.css','settings.css','settings.js'];
+const C='yr-v50',A=['./','index.html','app.js','manifest.webmanifest','33-logo.jpg','34-banner.jpg','38-bible.json','39-agpeya.json','coptic.css','settings.css','settings.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>Promise.all(A.map(u=>c.add(new Request(u,{cache:'reload'}))))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const same=new URL(r.url).origin===location.origin;e.respondWith((same?fetch(r.url,{cache:'no-store'}):fetch(r)).then(x=>{if(same&&x.ok){const cp=x.clone();caches.open(C).then(c=>c.put(r,cp))}return x}).catch(()=>caches.match(r)))});
