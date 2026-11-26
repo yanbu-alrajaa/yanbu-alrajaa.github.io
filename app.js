@@ -104,7 +104,7 @@ async function occr(p){nav(0);PARTS=null;DP.innerHTML='';
  setParts('أجزاء: '+ttl,d.map(x=>({l:x.t?cpt(x.t):'المقدمة'})));
  const body=d.map((s,k)=>`<div id="s${k}">`+(s.t?`<h3>${cpt(s.t)}</h3>`:'')+s.p.map(q=>`<p class="${q[0]==='r'?'rl':''}">${esc(q[1])}</p>`).join('')+'</div>').join('');
  $.innerHTML=banner(ttl,back)+`<div class="ctl"><button onclick="fs(-2)">أ-</button><button onclick="fs(2)">أ+</button><button onclick="fb()" style="font-weight:900">B</button></div><div class="read">${body}</div>`;window.scrollTo(0,0)}
-const _s5=document.createElement('style');_s5.textContent='.dr{padding:0!important;overflow:hidden!important;display:flex;flex-direction:column}.dsc{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-height:0;padding:14px 12px 28px}.dr a.hm{flex:none;position:relative;z-index:5;display:flex;align-items:center;gap:10px;background:#e0a21b;color:#14284a;margin:0;padding:calc(18px + env(safe-area-inset-top)) 18px 16px;border:0;border-bottom:3px solid #14284a;box-shadow:0 6px 12px #0006;font-size:22px;font-weight:900}.read p.rl{color:#9a7b1c;font-weight:700;margin:14px 0 0}.read .cp,.dr .cp{font-family:CopticYR,\'Noto Sans Coptic\',serif;direction:ltr}';document.head.append(_s5);
+const _s5=document.createElement('style');_s5.textContent='.dr{padding:0!important;overflow:hidden!important;display:flex;flex-direction:column}.dsc{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-height:0;padding:14px 12px 28px}.dr a.hm{flex:none;position:relative;z-index:5;display:block;background:#fffdf6;margin:0 12px;padding:calc(20px + env(safe-area-inset-top)) 10px 13px;border-bottom:1px solid #e0d4b0}.read p.rl{color:#9a7b1c;font-weight:700;margin:14px 0 0}.read .cp,.dr .cp{font-family:CopticYR,\'Noto Sans Coptic\',serif;direction:ltr}';document.head.append(_s5);
 async function route(){
  hfix();PARTS=null;cd();
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
@@ -159,7 +159,7 @@ function hfix(){const st=history.state;let back=false;if(st&&typeof st.n==='numb
 function gb(){const n=history.state&&history.state.n;if(n>0){history.back();return false}return true}
 (function(){const h=nz(location.hash);if(h==='#/'||history.state)return;const ch=[];let x=par(h);while(x){ch.unshift(x);x=par(x)}history.replaceState({n:0},'',ch[0]);ch.slice(1).forEach((u,i)=>history.pushState({n:i+1},'',u));history.pushState({n:ch.length},'',h)})();
 addEventListener('hashchange',route);route();
-const APPV='v22';
+const APPV='v23';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
