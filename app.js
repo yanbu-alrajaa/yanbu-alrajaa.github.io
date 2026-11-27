@@ -19,8 +19,8 @@ const hclk=k=>{const h=HCK[k];if(h===undefined)return svg('clock',26);const a=h*
 
 const VODV={0:'mMZAghmJrVI',1:'WY0KrP6nbaM',2:'7ab-h9CRa7w',3:'NfKAjXMzPfc',4:'L875pk862nE'};
 const VODL=[['إشعياء',41,10],['يوحنا',14,27],['فيلبي',4,6],['المزامير',23,1],['رومية',15,13],['يوحنا',3,16],['فيلبي',4,13],['المزامير',46,1]];
-async function vodr(){await load();const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);let r=VODL[n%VODL.length],v2=r[2],vid=VODV[n%VODL.length],ov='',rf='';try{const S=await (await fetch('vodsched.json',{cache:'no-store'})).json(),k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),s=S[k];if(s){r=[s[0],s[1],s[2]];v2=s[3];vid=s[4];ov=s[5];rf=s[6]}}catch(x){}
-const b=BIBLE.books.find(x=>x.n===r[0]),ch=b&&b.ch[r[1]-1];let t=ov||'';if(!ov&&ch)for(let i=r[2];i<=v2;i++)if(ch[i-1])t+=(t?' ':'')+ch[i-1];if(!t){$.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+'<p style="padding:20px">—</p>';return}
+async function vodr(){const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),i=n%VODL.length;let r=VODL[i],v2=r[2],vid=VODV[i],ov='',rf='';const[S,V]=await Promise.all([fetch('vodsched.json').then(x=>x.json()).catch(()=>({})),fetch('vod.json').then(x=>x.json()).catch(()=>[])]);if(V[i]&&V[i].t)ov=V[i].t;const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),s=S[k];if(s){r=[s[0],s[1],s[2]];v2=s[3];vid=s[4];ov=s[5];rf=s[6]}if(!ov)await load();
+const b=ov?null:BIBLE.books.find(x=>x.n===r[0]),ch=b&&b.ch[r[1]-1];let t=ov||'';if(!ov&&ch)for(let i=r[2];i<=v2;i++)if(ch[i-1])t+=(t?' ':'')+ch[i-1];if(!t){$.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+'<p style="padding:20px">—</p>';return}
 const ref=rf||(r[0]+' '+ar(r[1])+': '+ar(r[2])+(v2>r[2]?'-'+ar(v2):''));
 $.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+`<div style="padding:26px 22px"><div style="background:var(--navy);color:#fff6dc;border:3px solid var(--gold);border-radius:22px;padding:26px 20px;text-align:center"><div style="color:var(--gold);font-weight:800;margin-bottom:14px">آية اليوم · ${ar(d.getDate())} / ${ar(d.getMonth()+1)}</div><div style="font-size:22px;line-height:2">${esc(t)}</div><div style="margin-top:16px;color:var(--gold);font-weight:800">${ref}</div></div>${vid?`<div style="margin:20px auto 0;width:270px;max-width:100%;border:3px solid var(--gold);border-radius:22px;overflow:hidden;background:#000"><div class="vt sh" style="background-image:url(https://i.ytimg.com/vi/${vid}/hqdefault.jpg)" onclick="ytp(this,'${vid}',1)"><span>▶</span></div></div>`:''}</div>`;vodAsk()}
 
@@ -214,7 +214,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v116';
+const APPV='v117';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
@@ -241,7 +241,7 @@ function osLoad(){if(window.__osp)return window.__osp;return window.__osp=new Pr
 function vodAsk(){try{
  if(document.getElementById('vodpop'))return;
  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches,can='Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;
- if(localStorage.vodOn==='1'||(localStorage.vodNo&&Date.now()-(+localStorage.vodNo)<6048e5))return;
+ if(localStorage.vodOn==='1'){setTimeout(osLoad,12000);return}if((localStorage.vodNo&&Date.now()-(+localStorage.vodNo)<6048e5))return;
  if(can&&Notification.permission!=='default')return;
  let hint=false;if(!can){if(ios&&!sa)hint=true;else return}
  const e=document.createElement('div');e.id='vodpop';e.style.cssText='position:fixed;inset:0;z-index:50;background:#0008;display:flex;align-items:center;justify-content:center;padding:28px';
@@ -251,4 +251,4 @@ function vodAsk(){try{
  e.querySelector('#vy').onclick=async()=>{if(hint){no();return}close();try{const OS=await osLoad();await OS.Notifications.requestPermission();if(OS.Notifications.permission){await OS.User.PushSubscription.optIn();localStorage.vodOn='1'}}catch(x){}};
  const n=e.querySelector('#vn');if(n)n.onclick=no;
 }catch(x){}}
-if(localStorage.vodOn==='1')setTimeout(osLoad,3000);
+
