@@ -22,15 +22,40 @@ function tsSet(v){L.yrdt=v?'1':'0';tsAll(document.body);document.querySelectorAl
 const tsInit=()=>{mo.observe(document.body,{childList:true,subtree:true});if(L.yrdt==='1')tsAll(document.body)};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tsInit);else tsInit();
 apply();
+
+function vodSw(el){
+ const sw=el.querySelector('#vsw'),nt=el.querySelector('#vnote');if(!sw)return;
+ const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua),sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches,can='Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;
+ const show=m=>{nt.textContent=m;nt.style.display=m?'block':'none'};
+ const set=v=>{sw.setAttribute('aria-checked',v?'true':'false');sw.classList.toggle('on',!!v)};
+ set(L.vodOn==='1'&&can&&Notification.permission==='granted');
+ if(L.vodOn==='1'&&can&&Notification.permission==='granted'&&typeof osLoad==='function'){osLoad().then(OS=>{try{set(!!OS.User.PushSubscription.optedIn)}catch(x){}}).catch(()=>{})}
+ let busy=0;
+ sw.onclick=async()=>{if(busy)return;busy=1;show('');const want=sw.getAttribute('aria-checked')!=='true';
+  try{
+   if(want){
+    if(!can){show(ios&&!sa?'علشان توصلك الإشعارات: افتح البرنامج من أيقونته على الشاشة الرئيسية الأول.':'المتصفح ده مش بيدعم الإشعارات.');return}
+    if(Notification.permission==='denied'){show('الإشعارات مقفولة للبرنامج. فعّلها من إعدادات الجهاز > الإشعارات.');return}
+    const OS=await osLoad();if(Notification.permission==='default')await OS.Notifications.requestPermission();
+    if(Notification.permission==='granted'){await OS.User.PushSubscription.optIn();L.vodOn='1';set(1)}else{set(0)}
+   }else{
+    L.vodOn='0';set(0);
+    if(typeof osLoad==='function'){const OS=await osLoad();await OS.User.PushSubscription.optOut()}
+   }
+  }catch(x){show('حصلت مشكلة. جرب تاني.')}finally{busy=0}
+ };
+}
 function page(el){
  loadFonts();
  const s=get();
  const seg=(arr,cur,k)=>arr.map((x,i)=>`<button data-k="${k}" data-v="${i}" class="${i===cur?'on':''}">${x[0]}</button>`).join('');
  el.innerHTML=(typeof banner!=="undefined"?banner('إعدادات البرنامج','#/','',typeof IM!=="undefined"?IM.t:''):'')+`<div class="stg">
- <div class="sg"><h3>المظهر</h3><div class="th" id="g-th">${TH.map(x=>`<button data-k="th" data-v="${x[0]}" class="${x[0]===s.th?'on':''}"><i style="background:${x[3]};border-color:${x[4]}">${x[2]}</i>${x[1]}</button>`).join('')}</div></div>
+<div class="sg nt"><div class="ntr"><div class="ntx"><h3>إشعارات آية اليوم</h3><small>استقبال آية اليوم كل صباح الساعة ٨</small></div><button class="swt" id="vsw" role="switch" aria-checked="false" aria-label="إشعارات آية اليوم"><i></i></button></div><p class="note" id="vnote" style="display:none"></p></div>
+  <div class="sg"><h3>المظهر</h3><div class="th" id="g-th">${TH.map(x=>`<button data-k="th" data-v="${x[0]}" class="${x[0]===s.th?'on':''}"><i style="background:${x[3]};border-color:${x[4]}">${x[2]}</i>${x[1]}</button>`).join('')}</div></div>
  <div class="sg"><h3>إعداد النص</h3><h4>حجم الخط</h4><div class="seg wrap" id="g-sz">${seg(FS,s.sz,'sz')}</div><h4>سمك الخط</h4><div class="seg"><button data-k="b" data-v="0" class="${!s.b?'on':''}">عادي</button><button data-k="b" data-v="1" class="${s.b?'on':''}" style="font-weight:900">B عريض</button></div><h4>التشكيل</h4><div class="seg" id="g-ts"><button data-k="ts" data-v="0" class="${L.yrdt!=='1'?'on':''}">بالتشكيل</button><button data-k="ts" data-v="1" class="${L.yrdt==='1'?'on':''}">إلغاء التشكيل</button></div><h4>نوع الخط</h4><div class="fl" id="g-ff">${FF.map(x=>`<button data-k="ff" data-v="${x[0]}" class="${x[0]===s.ff?'on':''}" style="${x[2]?"font-family:'"+x[2]+"'":''}">${x[1]}<small>بسم الآب والابن والروح القدس إله واحد</small></button>`).join('')}</div></div>
  <a class="sg abt" href="#/settings/about"><span>من نحن</span><b>‹</b></a>
  </div>`;
+ vodSw(el);
  const bk=el.querySelector('.back');if(bk){bk.textContent='✕';bk.setAttribute('aria-label','إغلاق');bk.removeAttribute('onclick');bk.onclick=e=>{e.preventDefault();closeS()}}
  el.querySelector('.stg').onclick=e=>{const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k,v=b.dataset.v;
   if(k==='th')L.yrth=v;else if(k==='sz')L.yrsz=v;else if(k==='b')L.fbold=v==='1'?'1':'0';else if(k==='ff')L.yrff=v;else if(k==='ts'){tsSet(v==='1')}
