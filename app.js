@@ -211,7 +211,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v111';
+const APPV='v112';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
@@ -245,7 +245,7 @@ function vodAsk(){try{
  e.innerHTML=`<div style="background:var(--bg,#f8f4e8);border:3px solid var(--gold,#c9a24a);border-radius:22px;padding:24px 20px;text-align:center;color:var(--navy,#1d3b66);max-width:360px;width:100%;box-shadow:0 10px 40px #0007"><h3 style="margin:0 0 10px;font-size:22px">تنبيه آية اليوم</h3><p style="margin:0 0 18px;font-size:17px;line-height:1.8;color:#333">${hint?'عشان توصلك آية اليوم كل يوم: أضف التطبيق للشاشة الرئيسية (زر المشاركة ثم إضافة إلى الشاشة الرئيسية) وافتحه من الأيقونة.':'تحب توصلك آية اليوم كل يوم الساعة ٨ صباحًا؟'}</p><button id="vy" style="display:block;width:100%;background:var(--navy,#1d3b66);color:#fff6dc;border:0;border-radius:14px;padding:12px;font:inherit;font-size:18px;font-weight:700;margin-bottom:10px">${hint?'تمام':'أيوه، فعّل التنبيهات'}</button>${hint?'':'<button id="vn" style="background:none;border:0;color:#6b6b6b;font:inherit;font-size:16px;padding:6px">مش دلوقتي</button>'}</div>`;
  document.body.appendChild(e);
  const close=()=>e.remove(),no=()=>{localStorage.vodNo=Date.now();close()};
- e.querySelector('#vy').onclick=async()=>{if(hint){no();return}close();try{const OS=await osLoad();await OS.Notifications.requestPermission();if(OS.Notifications.permission){await OS.User.PushSubscription.optIn();localStorage.vodOn='1'}else localStorage.vodNo=Date.now()}catch(x){}};
+ e.querySelector('#vy').onclick=async()=>{if(hint){no();return}close();try{const OS=await osLoad();await OS.Notifications.requestPermission();if(OS.Notifications.permission){await OS.User.PushSubscription.optIn();localStorage.vodOn='1'}}catch(x){}};
  const n=e.querySelector('#vn');if(n)n.onclick=no;
 }catch(x){}}
 if(localStorage.vodOn==='1')setTimeout(osLoad,3000);
