@@ -160,7 +160,7 @@ async function route(){
  if(p[0]==='social'){nav(0);const S=[['YouTube','play','https://www.youtube.com/@yanbu.alrajaa'],['Facebook','fb','https://www.facebook.com/profile.php?id=61596842011158'],['TikTok','music','https://www.tiktok.com/@yanbu.alrajaa'],['Instagram','cam','https://www.instagram.com/yanbualrajaa/']];
   $.innerHTML=banner('سوشيال ميديا','#/')+`<div class="soc">${S.map(s=>s[2]?`<a href="${s[2]}" target="_blank" rel="noopener"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>فتح ›</i></a>`:`<div class="n"><div class="c">${svg(s[1],30)}</div>${s[0]}<i>قريبا</i></div>`).join('')}</div>`;return}
  if(p[0]==='lit'){nav(0);
-  if(p.length===1){$.innerHTML=banner('القداسات','#/')+VT()+`<div class="books ${VW()}">${LITM.map(l=>l[2]?`<a class="t" href="#/lit/${l[0]}"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>${ar(l[2])} جزءا</i></a>`:`<div class="t" style="opacity:.55"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>قيد البحث عن مصدر نظيف</i></div>`).join('')}</div>`+LCREDIT;return}
+  if(p.length===1){$.innerHTML=banner('القداسات','#/')+VT()+`<div class="books ${VW()}">${LITM.map(l=>l[2]?`<a class="t" href="#/lit/${l[0]}"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b></a>`:`<div class="t" style="opacity:.55"><div class="c">${svg('chalice',26)}</div><b>${l[1]}</b><i>قيد البحث عن مصدر نظيف</i></div>`).join('')}</div>`+LCREDIT;return}
   if(!LITM.find(x=>x[0]===p[1]&&x[2])){location.hash='#/lit';return}
   const l=LITC[p[1]]||(LITC[p[1]]=await (await fetch('lit-'+p[1]+'.json')).json());
   setParts('أجزاء '+l.title,l.parts.map(x=>({l:esc(x.t)})));
@@ -209,7 +209,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v89';
+const APPV='v90';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
