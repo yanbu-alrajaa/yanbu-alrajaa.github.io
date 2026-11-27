@@ -14,7 +14,7 @@ const b = bible.books.find(x => x.n === r[0]);
 const text = b.ch[r[1] - 1][r[2] - 1];
 const ar = x => String(x).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 const body = `${text}\n${r[0]} ${ar(r[1])}: ${ar(r[2])}`;
-const payload = { app_id: APP_ID, target_channel: 'push', included_segments: ['Subscribed Users'], headings: { en: 'آية اليوم', ar: 'آية اليوم' }, contents: { en: body, ar: body }, url: 'https://yanbu-alrajaa.github.io/#/vod' };
+const payload = { app_id: APP_ID, target_channel: 'push', included_segments: ['Total Subscriptions'], headings: { en: 'آية اليوم', ar: 'آية اليوم' }, contents: { en: body, ar: body }, url: 'https://yanbu-alrajaa.github.io/#/vod' };
 if (process.env.DRY) { console.log(JSON.stringify(payload, null, 1)); process.exit(0); }
 const res = await fetch('https://api.onesignal.com/notifications?c=push', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Key ' + process.env.ONESIGNAL_REST_API_KEY }, body: JSON.stringify(payload) });
 const out = await res.text(); console.log(res.status, out);
