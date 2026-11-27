@@ -29,6 +29,7 @@ function page(el){
  el.innerHTML=(typeof banner!=="undefined"?banner('إعدادات البرنامج','#/'):'')+`<div class="stg">
  <div class="sg"><h3>المظهر</h3><div class="th" id="g-th">${TH.map(x=>`<button data-k="th" data-v="${x[0]}" class="${x[0]===s.th?'on':''}"><i style="background:${x[3]};border-color:${x[4]}">${x[2]}</i>${x[1]}</button>`).join('')}</div></div>
  <div class="sg"><h3>إعداد النص</h3><h4>حجم الخط</h4><div class="seg wrap" id="g-sz">${seg(FS,s.sz,'sz')}</div><h4>سمك الخط</h4><div class="seg"><button data-k="b" data-v="0" class="${!s.b?'on':''}">عادي</button><button data-k="b" data-v="1" class="${s.b?'on':''}" style="font-weight:900">B عريض</button></div><h4>التشكيل</h4><div class="seg" id="g-ts"><button data-k="ts" data-v="0" class="${L.yrdt!=='1'?'on':''}">بالتشكيل</button><button data-k="ts" data-v="1" class="${L.yrdt==='1'?'on':''}">إلغاء التشكيل</button></div><h4>نوع الخط</h4><div class="fl" id="g-ff">${FF.map(x=>`<button data-k="ff" data-v="${x[0]}" class="${x[0]===s.ff?'on':''}" style="${x[2]?"font-family:'"+x[2]+"'":''}">${x[1]}<small>بسم الآب والابن والروح القدس إله واحد</small></button>`).join('')}</div></div>
+ <a class="sg abt" href="#/settings/about"><span>من نحن</span><b>‹</b></a>
  </div>`;
  const bk=el.querySelector('.back');if(bk){bk.textContent='✕';bk.setAttribute('aria-label','إغلاق');bk.removeAttribute('onclick');bk.onclick=e=>{e.preventDefault();closeS()}}
  el.querySelector('.stg').onclick=e=>{const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k,v=b.dataset.v;
