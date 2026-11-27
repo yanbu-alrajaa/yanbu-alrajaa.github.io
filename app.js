@@ -157,7 +157,7 @@ function pgDepth(h){h=decodeURIComponent(h.replace(/^#/,''))||'/';return h.split
 function pgSnap(){try{if(_pg0||_rm.matches)return null;const a=document.getElementById('app');if(!a)return null;const w=document.createElement('div');w.className='pgs';w.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden;z-index:3;pointer-events:none;background:'+getComputedStyle(document.body).backgroundColor;const c=a.cloneNode(true);c.style.cssText='position:absolute;left:'+a.getBoundingClientRect().left+'px;top:'+(-scrollY)+'px;width:'+a.offsetWidth+'px;margin:0';w.appendChild(c);return w}catch(e){return null}}
 function pgAnim(w,d0){if(_pg0){_pg0=0;return}if(!w||_rm.matches)return;const a=document.getElementById('app');if(!a)return;const d1=pgDepth(location.hash),S=PGC.s,k=PGC.d,E=PGC.e,P=PGC.p;const bg=getComputedStyle(document.body).backgroundColor;
  document.body.appendChild(w);const dim=document.createElement('div');dim.style.cssText='position:fixed;inset:0;background:#000;opacity:0;z-index:1;pointer-events:none';document.body.appendChild(dim);
- const done=[];const A=(el,kf,o)=>{const x=el.animate(kf,Object.assign({duration:k,easing:E,fill:'both'},o||{}));x.id='pg';done.push(x.finished);return x};
+ const done=[];const A=(el,kf,o)=>{const x=el.animate(kf,Object.assign({duration:k,easing:E,fill:'backwards'},o||{}));x.id='pg';done.push(x.finished);return x};
  const hx=document.documentElement;hx.style.overflowX='hidden';
  const end=()=>{w.remove();dim.remove();a.style.cssText=a.dataset.st||'';hx.style.overflowX=''};a.dataset.st=a.style.cssText;
  if(d1===d0){w.style.zIndex=3;A(w,[{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});Promise.all(done).then(end);return}
@@ -234,7 +234,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;const _w=pgSnap(),_d0=pgDepth(PGH);PGH=location.hash;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin();pgAnim(_w,_d0)}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v121';
+const APPV='v122';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
