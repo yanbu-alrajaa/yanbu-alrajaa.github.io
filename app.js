@@ -234,7 +234,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;const _w=pgSnap(),_d0=pgDepth(PGH);PGH=location.hash;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin();pgAnim(_w,_d0)}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v120';
+const APPV='v119';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
@@ -272,4 +272,3 @@ function vodAsk(){try{
  const n=e.querySelector('#vn');if(n)n.onclick=no;
 }catch(x){}}
 
-(function(){const LS=matchMedia('(orientation:landscape) and (max-height:520px)');const g=document.createElement('button');g.className='gm';g.textContent='\u2630';g.setAttribute('aria-label','\u0627\u0644\u0642\u0627\u0626\u0645\u0629');g.onclick=()=>od('m');document.body.appendChild(g);const od0=od;od=function(w){od0(w);if(w==='m'&&LS.matches){(DM.querySelector('.hmr')||DM).insertAdjacentHTML(DM.querySelector('.hmr')?'afterend':'afterbegin','<div style="padding:0 2px"><a href="#/" onclick="cd()">\u2302 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629</a><a href="#/bible" onclick="cd()">\u0627\u0644\u0643\u062a\u0627\u0628 \u0627\u0644\u0645\u0642\u062f\u0633</a><a href="#/settings" onclick="cd()">\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062c</a></div>');DM.scrollTop=0;setTimeout(()=>{DM.scrollTop=0},320)}}})();
