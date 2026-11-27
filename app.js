@@ -19,7 +19,7 @@ const hclk=k=>{const h=HCK[k];if(h===undefined)return svg('clock',26);const a=h*
 
 const VODL=[['إشعياء',41,10],['يوحنا',14,27],['فيلبي',4,6],['المزامير',23,1],['رومية',15,13],['يوحنا',3,16],['فيلبي',4,13],['المزامير',46,1]];
 async function vodr(){await load();const d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),r=VODL[n%VODL.length],b=BIBLE.books.find(x=>x.n===r[0]),t=b&&b.ch[r[1]-1]&&b.ch[r[1]-1][r[2]-1];if(!t){$.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+'<p style="padding:20px">—</p>';return}
-$.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+`<div style="padding:26px 22px"><div style="background:var(--navy);color:#fff6dc;border:3px solid var(--gold);border-radius:22px;padding:26px 20px;text-align:center"><div style="color:var(--gold);font-weight:800;margin-bottom:14px">آية اليوم · ${ar(d.getDate())} / ${ar(d.getMonth()+1)}</div><div style="font-size:22px;line-height:2">${esc(t)}</div><div style="margin-top:16px;color:var(--gold);font-weight:800">${r[0]} ${ar(r[1])}: ${ar(r[2])}</div></div><a href="#/bible" style="display:block;text-align:center;margin-top:18px;color:var(--navy);font-weight:800">افتح الإصحاح كامل</a></div>`}
+$.innerHTML=banner('آية اليوم','#/','',IM.vd,'كلمة النهاردة')+`<div style="padding:26px 22px"><div style="background:var(--navy);color:#fff6dc;border:3px solid var(--gold);border-radius:22px;padding:26px 20px;text-align:center"><div style="color:var(--gold);font-weight:800;margin-bottom:14px">آية اليوم · ${ar(d.getDate())} / ${ar(d.getMonth()+1)}</div><div style="font-size:22px;line-height:2">${esc(t)}</div><div style="margin-top:16px;color:var(--gold);font-weight:800">${r[0]} ${ar(r[1])}: ${ar(r[2])}</div></div><a href="#/bible" style="display:block;text-align:center;margin-top:18px;color:var(--navy);font-weight:800">افتح الإصحاح كامل</a></div>`;vodAsk()}
 
 async function vodfill(){try{const V=await (await fetch('vod.json')).json(),d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),r=V[n%V.length],e=document.getElementById('vodc');if(e&&r&&r.t){e.href='#/book/'+r.i+'/'+r.c+'/'+r.v;e.innerHTML='<small>✦ آية اليوم</small><span>'+esc(r.t)+'</span><small>'+r.n+' '+ar(r.c)+': '+ar(r.v)+'</small>'}}catch(x){}}
 const SEC=[['الكتاب المقدس','book','#/bible'],['القداسات','chalice','#/lit'],['الأجبية','clock','#/agpeya'],['السنكسار','saint','#/syn'],['القراءات اليومية','rd','#/rd'],['الأعياد والمناسبات','cal','#/occ'],['آية اليوم','vd','#/vod'],['ميديا','play','#/media'],['سوشيال ميديا','share','#/social']];
@@ -211,7 +211,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin()}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v110';
+const APPV='v111';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
@@ -232,3 +232,20 @@ async function cfSend(){const g=i=>((document.getElementById(i)||{value:''}).val
 
 function cfOpen(){if(document.getElementById('cfm0'))return;const m=document.createElement('div');m.id='cfm0';m.className='cfmod';m.onclick=e=>{if(e.target===m)cfClose()};m.innerHTML='<div class="cfbox"><button class="cfx" onclick="cfClose()" aria-label="إغلاق">✕</button><h3>للتواصل</h3>'+'<div id="cfb"><input type="text" id="cfn" maxlength="80" autocomplete="name" placeholder="الاسم"><input type="email" id="cfm" maxlength="120" dir="ltr" autocomplete="email" placeholder="الإيميل (اختياري)"><input type="tel" id="cfp" maxlength="30" dir="ltr" autocomplete="tel" placeholder="رقم الهاتف (اختياري)"><textarea id="cft" maxlength="2000" rows="5" placeholder="اكتب رسالتك أو تعليقك هنا"></textarea><input type="text" id="cfh" tabindex="-1" autocomplete="off" style="display:none"><div class="cfe" id="cfe"></div><button class="cfs" onclick="cfSend()">إرسال</button></div>'+'</div>';document.body.appendChild(m);document.documentElement.style.overflow='hidden'}
 function cfClose(){clearTimeout(window.cfT);const m=document.getElementById('cfm0');if(m)m.remove();document.documentElement.style.overflow=''}
+
+const OSID='d4afa55f-eb6b-4ffc-8b70-f685c132edf9';
+function osLoad(){if(window.__osp)return window.__osp;return window.__osp=new Promise(res=>{window.OneSignalDeferred=window.OneSignalDeferred||[];OneSignalDeferred.push(async function(OS){await OS.init({appId:OSID,serviceWorkerPath:'push/onesignal/OneSignalSDKWorker.js',serviceWorkerParam:{scope:'/push/onesignal/'},autoResubscribe:true});res(OS)});const x=document.createElement('script');x.src='https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';x.defer=true;document.head.appendChild(x)})}
+function vodAsk(){try{
+ if(document.getElementById('vodpop'))return;
+ const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches,can='Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;
+ if(localStorage.vodOn==='1'||(localStorage.vodNo&&Date.now()-(+localStorage.vodNo)<6048e5))return;
+ if(can&&Notification.permission!=='default')return;
+ let hint=false;if(!can){if(ios&&!sa)hint=true;else return}
+ const e=document.createElement('div');e.id='vodpop';e.style.cssText='position:fixed;inset:0;z-index:50;background:#0008;display:flex;align-items:center;justify-content:center;padding:28px';
+ e.innerHTML=`<div style="background:var(--bg,#f8f4e8);border:3px solid var(--gold,#c9a24a);border-radius:22px;padding:24px 20px;text-align:center;color:var(--navy,#1d3b66);max-width:360px;width:100%;box-shadow:0 10px 40px #0007"><h3 style="margin:0 0 10px;font-size:22px">تنبيه آية اليوم</h3><p style="margin:0 0 18px;font-size:17px;line-height:1.8;color:#333">${hint?'عشان توصلك آية اليوم كل يوم: أضف التطبيق للشاشة الرئيسية (زر المشاركة ثم إضافة إلى الشاشة الرئيسية) وافتحه من الأيقونة.':'تحب توصلك آية اليوم كل يوم الساعة ٨ صباحًا؟'}</p><button id="vy" style="display:block;width:100%;background:var(--navy,#1d3b66);color:#fff6dc;border:0;border-radius:14px;padding:12px;font:inherit;font-size:18px;font-weight:700;margin-bottom:10px">${hint?'تمام':'أيوه، فعّل التنبيهات'}</button>${hint?'':'<button id="vn" style="background:none;border:0;color:#6b6b6b;font:inherit;font-size:16px;padding:6px">مش دلوقتي</button>'}</div>`;
+ document.body.appendChild(e);
+ const close=()=>e.remove(),no=()=>{localStorage.vodNo=Date.now();close()};
+ e.querySelector('#vy').onclick=async()=>{if(hint){no();return}close();try{const OS=await osLoad();await OS.Notifications.requestPermission();if(OS.Notifications.permission){await OS.User.PushSubscription.optIn();localStorage.vodOn='1'}else localStorage.vodNo=Date.now()}catch(x){}};
+ const n=e.querySelector('#vn');if(n)n.onclick=no;
+}catch(x){}}
+if(localStorage.vodOn==='1')setTimeout(osLoad,3000);
