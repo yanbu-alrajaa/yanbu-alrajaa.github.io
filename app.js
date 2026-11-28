@@ -176,7 +176,7 @@ async function route(){
  const h=decodeURIComponent(location.hash.slice(1))||'/';const p=h.split('/').filter(Boolean);
  if(!p.length){nav(1);$.innerHTML=`<img class="logo" src="33-logo.jpg" alt="ينبوع الرجاء"><div class="grid6">${SEC.map(s=>`<a class="s" href="${s[2]}"><div class="c">${svg('h_'+s[1],46)}</div>${s[0]}</a>`).join('')}</div>`;return}
 
- if(p[0]==='settings'&&p[1]==='about'){nav(3);$.innerHTML=banner('من نحن','#/settings','',IM.o)+'<div class="ab"><div class="sg ai"><h3>من نحن؟</h3><p>نحن مجموعة من الشباب القبطي الأرثوذكسي، يجمعنا حب المسيح والانتماء لكنيستنا القبطية الأرثوذكسية، ونسعى بكل محبة أن نكون سبب بركة وخدمة لأبنائها.</p><p>ومن هنا جاءت فكرة هذا التطبيق، ليكون وسيلة لخدمة الكنيسة وأولادها، ونشر الإيمان والتعاليم الأرثوذكسية، وتقديم محتوى روحي هادف يساعد الجميع على النمو في الحياة الروحية والارتباط بكنيستنا.</p><p>هدفنا أن نخدم بمحبة، وننمو معًا في المسيح.</p></div></div>';window.scrollTo(0,0);return}if(p[0]==='settings'){nav(3);YRS.page($);return}
+ if(p[0]==='settings'&&p[1]==='about'){nav(3);$.innerHTML=banner('من نحن','#/settings','',IM.o)+'<div class="ab"><div class="sg ai"><h3>من نحن؟</h3><p>نحن مجموعة من الشباب القبطي الأرثوذكسي، يجمعنا حب المسيح والانتماء لكنيستنا القبطية الأرثوذكسية، ونسعى بكل محبة أن نكون سبب بركة وخدمة لأبنائها.</p><p>ومن هنا جاءت فكرة هذا التطبيق، ليكون وسيلة لخدمة الكنيسة وأولادها، ونشر الإيمان والتعاليم الأرثوذكسية، وتقديم محتوى روحي هادف يساعد الجميع على النمو في الحياة الروحية والارتباط بكنيستنا.</p><p>هدفنا أن نخدم بمحبة، وننمو معًا في المسيح.</p></div><button class="sg cfbtn" onclick="cfOpen()"><span>للتواصل اضغط هنا</span><b>‹</b></button></div>';window.scrollTo(0,0);return}if(p[0]==='settings'){nav(3);YRS.page($);return}
  if(p[0]==='media'){nav(0);let M=[];try{M=await (await fetch('media.json?x='+Date.now())).json()}catch(e){}
   if(!Array.isArray(M))M=[];if(!M.some(x=>x.id==='a'))M.unshift({id:'a',title:'آيات وكلمات منفعة',icon:'book',videos:[{id:'mMZAghmJrVI',title:'آية اليوم: إشعياء ٤١: ١٠',s:1}]});
   if(!p[1]){$.innerHTML=banner('ميديا','#/','',IM.mm,'فيديوهات')+`<div class="soc">${M.map(c=>`<a href="#/media/${c.id}"><div class="c">${svg(c.icon,30)}</div>${esc(c.title)}<i>${c.videos.length?ar(c.videos.length)+' فيديو':'قريبا'} ›</i></a>`).join('')}</div>`;return}
@@ -234,7 +234,7 @@ try{history.scrollRestoration='manual'}catch(e){}
 const gTop=()=>{scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;if($)$.scrollTop=0};
 const route0=route;route=async function(){SEL=null;const _w=pgSnap(),_d0=pgDepth(PGH);PGH=location.hash;gTop();try{await route0()}finally{gTop();smf();requestAnimationFrame(gTop);swfin();pgAnim(_w,_d0)}};
 addEventListener('resize',smf);addEventListener('hashchange',route);addEventListener('pageshow',e=>{if(e.persisted)gTop()});route();
-const APPV='v124';
+const APPV='v125';
 async function chk(){try{const t=await (await fetch('app.js?x='+Date.now(),{cache:'no-store'})).text();const m=t.match(/const APPV='([^']+)'/);if(m&&m[1]!==APPV){const k=+sessionStorage.rl||0;if(Date.now()-k<60000)return;sessionStorage.rl=Date.now();try{await fetch('app.js',{cache:'reload'});await fetch('index.html',{cache:'reload'});const r=await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}location.reload()}}catch(e){}}
 addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});addEventListener('pageshow',e=>{if(e.persisted)chk()});chk();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
